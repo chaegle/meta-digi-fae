@@ -1,0 +1,45 @@
+From ddc29aeb9015d751d30c9d337ed6f04d2bfc4d5d Mon Sep 17 00:00:00 2001
+From: Cameron Haegle <chaegle@gmail.com>
+Date: Sat, 27 Oct 2018 20:29:34 -0500
+Subject: [PATCH] Enable i2c4 bus
+
+---
+ board/digi/ccimx6ul/ccimx6ul.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/board/digi/ccimx6ul/ccimx6ul.c b/board/digi/ccimx6ul/ccimx6ul.c
+index 7146fc2..2771eee 100644
+--- a/board/digi/ccimx6ul/ccimx6ul.c
++++ b/board/digi/ccimx6ul/ccimx6ul.c
+@@ -70,6 +70,20 @@ struct i2c_pads_info i2c1_pad_info = {
+ 		.gp = IMX_GPIO_NR(1, 29),
+ 	},
+ };
++
++/* I2C4 */
++struct i2c_pads_info i2c4_pad_info = {
++        .scl = {
++                .i2c_mode =  MX6_PAD_UART2_TX_DATA__I2C4_SCL | PC,
++                .gpio_mode = MX6_PAD_UART2_TX_DATA__GPIO1_IO20 | PC,
++                .gp = IMX_GPIO_NR(1, 20),
++        },
++        .sda = {
++                .i2c_mode = MX6_PAD_UART2_RX_DATA__I2C4_SDA | PC,
++                .gpio_mode = MX6_PAD_UART2_RX_DATA__GPIO1_IO21 | PC,
++                .gp = IMX_GPIO_NR(1, 21),
++        },
++};
+ #endif
+ 
+ static struct ccimx6_variant ccimx6ul_variants[] = {
+@@ -395,6 +409,7 @@ int ccimx6ul_init(void)
+ 
+ #ifdef CONFIG_SYS_I2C_MXC
+ 	setup_i2c(0, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c1_pad_info);
++	setup_i2c(3, CONFIG_SYS_I2C_SPEED, 0x7f, &i2c4_pad_info);
+ 	mca_init();
+ #endif
+ 
+-- 
+2.7.4
+
